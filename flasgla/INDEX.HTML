@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de palabras (ChatGTP creation)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+        input, button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Generador Aleatorio de Palabras</h1>
+    
+    <label for="word">Escribe la palabra que quieres generar:</label>
+    <input type="text" id="word" placeholder="Ingresa una palabra">
+    
+    <label for="attempts">Número de intentos:</label>
+    <input type="number" id="attempts" placeholder="Número de intentos" min="1">
+    
+    <button onclick="startGeneration()">Generar</button>
+    
+    <div id="result"></div>
+
+    <script>
+        // Función para generar una letra aleatoria de la 'a' a la 'z'
+        function randomLetter() {
+            const letters = 'abcdefghijklmnopqrstuvwxyz';
+            return letters[Math.floor(Math.random() * letters.length)];
+        }
+
+        // Función para intentar generar la palabra deseada
+        function startGeneration() {
+            const targetWord = document.getElementById("word").value.toLowerCase();
+            const totalAttempts = parseInt(document.getElementById("attempts").value);
+            const resultDiv = document.getElementById("result");
+            let currentAttempt = 0;
+            let generatedWord = '';
+            let success = false;
+
+            if (!targetWord || isNaN(totalAttempts) || totalAttempts <= 0) {
+                resultDiv.innerHTML = "<p style='color: red;'>Por favor, ingresa una palabra válida y un número de intentos mayor que 0.</p>";
+                return;
+            }
+
+            while (currentAttempt < totalAttempts) {
+                generatedWord = '';
+                for (let i = 0; i < targetWord.length; i++) {
+                    generatedWord += randomLetter();
+                }
+
+                currentAttempt++;
+                
+                if (generatedWord === targetWord) {
+                    success = true;
+                    break;
+                }
+            }
+
+            if (success) {
+                resultDiv.innerHTML = `<p style='color: green;'>¡Palabra generada correctamente en ${currentAttempt} intentos!</p>`;
+            } else {
+                resultDiv.innerHTML = `<p style='color: orange;'>No se pudo generar la palabra en ${totalAttempts} intentos. Última palabra generada: <strong>${generatedWord}</strong></p>`;
+            }
+        }
+    </script>
+
+</body>
+</html>
